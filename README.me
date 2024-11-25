@@ -1,0 +1,46 @@
+# Stripe Payment Demo App
+
+This demo application showcases a basic implementation of a Stripe payment flow using Express and Handlebars (hbs) for the frontend. Users can select products, specify quantities, and proceed to a Stripe-hosted checkout session.
+
+## Requirements
+
+- Node.js (v16 or higher)
+- npm (v7 or higher)
+- Stripe account with API keys
+
+## Setup Instructions
+
+### Step 1: Generate the Express App
+Generate a new Express app using the following command:
+    <pre>
+    npx express-generator --view=hbs stripe-exercise
+    cd stripe-exercise
+    </pre>
+### Step 2: Install Dependencies
+Install the required dependencies using npm: body-parser, dotenv, express, hbs, http-errors, morgan, and stripe.
+    <pre>
+    npm install
+    </pre>
+### Step 3: Set Up Stripe API Keys
+Create a .env file in the root directory and add your Stripe API keys:
+Get your Stripe API keys from the Stripe dashboard: [https://dashboard.stripe.com/test/apikeys]
+    STRIPE_SECRET_KEY=your_stripe_secret_key
+    STRIPE_PUBLIC_KEY=your_stripe_publishable_key
+### Step 4: Start the Development Server
+    npm start
+The app will be accessible at [http://localhost:3000].
+### step 5: Update Routes
+### step 6: Update Views
+Update the views/index.hbs file to include the product selection form and the checkout button.
+Create a view for successful payment.
+### step 7: Make a checkout route 
+Create a new route in routes/checkout.js to handle the checkout session creation.
+Create a session and describe a line items for the checkout session.
+### step 8: Run the Application
+First close the already running server.
+Then run the following command to start the server:
+    <pre>
+    npm start
+    </pre>
+### step 9: Test the Payment Flow
+check your payment on the stripe dashboard: [https://dashboard.stripe.com/test/payments]

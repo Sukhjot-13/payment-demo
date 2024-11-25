@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Page metadata and linking the external CSS stylesheet -->
+  <title>Stripe Demo</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Page title -->
+    <h1 class="title">Products</h1>
+    
+    <!-- Checkout form to display products dynamically and collect user input -->
+    <form id="checkout-form" class="product-form">
+      <!-- Loop through the products array and render product details -->
+      {{#each products}}
+        <div class="product-card">
+          <!-- Display product name -->
+          <h2>{{name}}</h2>
+          <!-- Display product price -->
+          <p class="product-price">${{price}}</p>
+          <!-- Quantity input for each product -->
+          <label for="quantity-{{id}}" class="quantity-label">Quantity:</label>
+          <input 
+            type="number" 
+            id="quantity-{{id}}" 
+            name="quantity" 
+            value="{{quantity}}" 
+            min="1" 
+            data-id="{{id}}" 
+            data-name="{{name}}" 
+            data-price="{{price}}" 
+            class="quantity-input">
+        </div>
+      {{/each}}
+      <!-- Submit button to proceed to checkout -->
+      <button type="submit" class="checkout-button">Proceed to Checkout</button>
+    </form>
+  </div>
+
+  <script>
+    // Attach an event listener to the checkout form for handling form submission
+    document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+      e.preventDefault(); // Prevent default form submission behavior
+
+      // Gather all product details and quantities from the input fields
+      const items = Array.from(document.querySelectorAll('input[type="number"]')).map(input => ({
+        id: input.dataset.id, // Product ID
+        name: input.dataset.name, // Product name
+        price: parseInt(input.dataset.price) * 100, // Convert price to cents
+        quantity: parseInt(input.value), // Quantity selected by the user
+      }));
+
+      // Send a POST request to the server with the selected items
+      const response = await fetch('/checkout', {
+        method: 'POST', // HTTP POST method
+        headers: { 'Content-Type': 'application/json' }, // Content type for JSON payload
+        body: JSON.stringify({ items }), // Stringify the items array and include it in the request body
+      });
+
+      // Parse the JSON response from the server
+      const data = await response.json();
+      
+      // Redirect to the payment URL or display an error message
+      if (data.url) {
+        window.location.href = data.url; // Redirect to the payment page
+      } else {
+        alert('Payment failed.'); // Display an error alert
+      }
+    });
+  </script>
+</body>
+</html>
